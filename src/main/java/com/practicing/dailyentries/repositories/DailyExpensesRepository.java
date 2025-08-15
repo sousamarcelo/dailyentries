@@ -1,7 +1,7 @@
 package com.practicing.dailyentries.repositories;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -19,5 +19,5 @@ public interface DailyExpensesRepository extends JpaRepository<DailyExpenses, Lo
 			INNER JOIN TB_CATEGORY ON LANCAMENTOS.CATEGORY_ID = TB_CATEGORY.ID 
 			INNER JOIN TB_USER ON LANCAMENTOS.USER_ID = TB_USER.ID 			
 			""")
-	List<DailyExpensesDetailsProjection> dailyExpensesAll();
+	Page<DailyExpensesDetailsProjection> dailyExpensesAll(Pageable pageable);
 }

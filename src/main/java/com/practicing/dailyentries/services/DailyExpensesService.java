@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,9 +20,9 @@ public class DailyExpensesService {
 	private DailyExpensesRepository repository;
 		
 	@Transactional(readOnly = true)
-	public List<DailyExpensesDTO> dailyExpensesAll(){
-		List<DailyExpensesDetailsProjection> list = repository.dailyExpensesAll();
-		List<DailyExpensesDTO> result = list.stream().map(x -> new DailyExpensesDTO(x)).collect(Collectors.toList());
+	public Page<DailyExpensesDTO> dailyExpensesAll(Pageable pageable){
+		Page<DailyExpensesDetailsProjection> list = repository.dailyExpensesAll(pageable);
+		Page<DailyExpensesDTO> result = list.map(x -> new DailyExpensesDTO(x));
 		return result;
 	}
 }

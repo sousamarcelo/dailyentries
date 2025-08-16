@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public interface DailyExpensesDetailsProjection {
 	
-	Integer getId();
+	Long getId();
 	LocalDate getDate();
 	String getStatus();
 	String getUsername();

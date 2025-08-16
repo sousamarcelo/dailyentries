@@ -1,7 +1,6 @@
 package com.practicing.dailyentries.services;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -10,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.practicing.dailyentries.dto.DailyExpensesDTO;
+import com.practicing.dailyentries.entities.DailyExpenses;
 import com.practicing.dailyentries.projection.DailyExpensesDetailsProjection;
 import com.practicing.dailyentries.repositories.DailyExpensesRepository;
 
@@ -18,6 +18,13 @@ public class DailyExpensesService {
 	
 	@Autowired
 	private DailyExpensesRepository repository;
+	
+	@Transactional(readOnly = true)
+	public DailyExpensesDTO findById(Long id) {
+		Optional<DailyExpenses> result = repository.findById(id);
+		DailyExpenses dailyExpenses = result.get();
+		return new DailyExpensesDTO(dailyExpenses);
+	}
 		
 	@Transactional(readOnly = true)
 	public Page<DailyExpensesDTO> dailyExpensesAll(Pageable pageable){

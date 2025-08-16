@@ -1,10 +1,11 @@
 package com.practicing.dailyentries.dto;
 
+import com.practicing.dailyentries.entities.DailyExpenses;
 import com.practicing.dailyentries.projection.DailyExpensesDetailsProjection;
 
 public class DailyExpensesDTO {
 	
-	private Integer id;
+	private Long id;
 	private String Date;
 	private String status;
 	private String username;
@@ -15,7 +16,7 @@ public class DailyExpensesDTO {
 	public DailyExpensesDTO() {
 	}
 
-	public DailyExpensesDTO(Integer id ,String date, String status, String username, String categoryname, String name,
+	public DailyExpensesDTO(Long id ,String date, String status, String username, String categoryname, String name,
 			Double amount) {
 		super();
 		this.id = id;
@@ -38,7 +39,17 @@ public class DailyExpensesDTO {
 		amount = projection.getAmount();
 	}
 	
-	public Integer getId() {
+	public DailyExpensesDTO(DailyExpenses entity) {
+		id = entity.getId();
+		Date = String.valueOf(entity.getDate());
+		status = entity.getStatus().toString();
+		username = entity.getUser().getEmail();
+		categoryname = entity.getCategory().getName();
+		name = entity.getName();
+		amount = entity.getAmount();
+	}
+	
+	public Long getId() {
 		return id;
 	}
 

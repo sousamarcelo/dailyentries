@@ -76,12 +76,12 @@ public class DailyExpenses {
 		this.description = description;
 	}
 
-	public Double getValue() {
+	public Double getAmount() {
 		return amount;
 	}
 
-	public void setValue(Double value) {
-		this.amount = value;
+	public void setAmount(Double amount) {
+		this.amount = amount;
 	}
 
 	public ExpenseStatus getStatus() {

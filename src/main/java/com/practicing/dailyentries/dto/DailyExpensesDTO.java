@@ -1,79 +1,73 @@
 package com.practicing.dailyentries.dto;
 
 import com.practicing.dailyentries.entities.DailyExpenses;
-import com.practicing.dailyentries.projection.DailyExpensesDetailsProjection;
 
 public class DailyExpensesDTO {
 	
 	private Long id;
-	private String Date;
-	private String status;
-	private String username;
-	private String categoryname;
 	private String name;
+	private String description;
 	private Double amount;
+	private String status;
+	private String date;
+	private Long user;	
+	private Long category;	
 	
 	public DailyExpensesDTO() {
 	}
 
-	public DailyExpensesDTO(Long id ,String date, String status, String username, String categoryname, String name,
-			Double amount) {
-		super();
+	public DailyExpensesDTO(Long id, String name, String description, Double amount, String status, String date,
+			Long user, Long category) {
 		this.id = id;
-		this.Date = String.valueOf(date);
-		this.status = status;
-		this.username = username;
-		this.categoryname = categoryname;
 		this.name = name;
+		this.description = description;
 		this.amount = amount;
-	}
-	
-	public DailyExpensesDTO(DailyExpensesDetailsProjection projection) {
-		super();
-		id = projection.getId();
-		Date = String.valueOf(projection.getDate());
-		status = projection.getStatus();
-		username = projection.getUsername();
-		categoryname = projection.getCategoryname();
-		name = projection.getName();
-		amount = projection.getAmount();
+		this.status = status;
+		this.date = date;
+		this.user = user;
+		this.category = category;
 	}
 	
 	public DailyExpensesDTO(DailyExpenses entity) {
 		id = entity.getId();
-		Date = String.valueOf(entity.getDate());
-		status = entity.getStatus().toString();
-		username = entity.getUser().getEmail();
-		categoryname = entity.getCategory().getName();
 		name = entity.getName();
+		description = entity.getDescription();
 		amount = entity.getAmount();
+		status = entity.getStatus().name();
+		date = entity.getDate().toString();
+		user = entity.getUser().getId();
+		category = entity.getCategory().getId();
 	}
-	
+
 	public Long getId() {
 		return id;
-	}
-
-	public String getDate() {
-		return Date;
-	}
-
-	public String getStatus() {
-		return status;
-	}
-
-	public String getUsername() {
-		return username;
-	}
-
-	public String getCategoryname() {
-		return categoryname;
 	}
 
 	public String getName() {
 		return name;
 	}
 
+	public String getDescription() {
+		return description;
+	}
+
 	public Double getAmount() {
 		return amount;
-	}	
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public String getDate() {
+		return date;
+	}
+
+	public Long getUser() {
+		return user;
+	}
+
+	public Long getCategory() {
+		return category;
+	}
 }

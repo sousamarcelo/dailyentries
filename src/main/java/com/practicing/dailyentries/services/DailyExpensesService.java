@@ -1,5 +1,6 @@
 package com.practicing.dailyentries.services;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,9 +10,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.practicing.dailyentries.dto.DailyExpensesDTO;
+import com.practicing.dailyentries.dto.DailyExpensesProjectionDTO;
+import com.practicing.dailyentries.entities.Category;
 import com.practicing.dailyentries.entities.DailyExpenses;
+import com.practicing.dailyentries.entities.ExpenseStatus;
+import com.practicing.dailyentries.entities.User;
 import com.practicing.dailyentries.projection.DailyExpensesDetailsProjection;
+import com.practicing.dailyentries.repositories.CategoryRepository;
 import com.practicing.dailyentries.repositories.DailyExpensesRepository;
+import com.practicing.dailyentries.repositories.UserRepository;
 
 @Service
 public class DailyExpensesService {
@@ -19,17 +26,42 @@ public class DailyExpensesService {
 	@Autowired
 	private DailyExpensesRepository repository;
 	
+	@Autowired
+	private UserRepository userRepository;
+	
+	@Autowired
+	private CategoryRepository categoryRepository;
+	
+	
 	@Transactional(readOnly = true)
-	public DailyExpensesDTO findById(Long id) {
+	public DailyExpensesProjectionDTO findById(Long id) {
 		Optional<DailyExpenses> result = repository.findById(id);
 		DailyExpenses dailyExpenses = result.get();
-		return new DailyExpensesDTO(dailyExpenses);
+		return new DailyExpensesProjectionDTO(dailyExpenses);
 	}
 		
 	@Transactional(readOnly = true)
-	public Page<DailyExpensesDTO> dailyExpensesAll(Pageable pageable){
+	public Page<DailyExpensesProjectionDTO> dailyExpensesAll(Pageable pageable){
 		Page<DailyExpensesDetailsProjection> list = repository.dailyExpensesAll(pageable);
-		Page<DailyExpensesDTO> result = list.map(x -> new DailyExpensesDTO(x));
+		Page<DailyExpensesProjectionDTO> result = list.map(x -> new DailyExpensesProjectionDTO(x));
 		return result;
+	}
+	
+	@Transactional
+	public DailyExpensesDTO insert(DailyExpensesDTO dto) {
+		DailyExpenses entity = new DailyExpenses();
+		entity.setId(dto.getId());
+		entity.setName(dto.getName());
+		entity.setDescription(dto.getDescription());
+		entity.setAmount(dto.getAmount());
+		entity.setStatus(ExpenseStatus.valueOf(dto.getStatus()));
+		entity.setDate(LocalDate.parse(dto.getDate()));
+		User user = userRepository.getReferenceById(dto.getUser());
+		entity.setUser(user);
+		Category category = categoryRepository.getReferenceById(dto.getCategory());
+		entity.setCategory(category);
+		
+		entity = repository.save(entity);
+		return new DailyExpensesDTO(entity);
 	}
 }

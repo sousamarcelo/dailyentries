@@ -1,6 +1,7 @@
 package com.practicing.dailyentries.services;
 
 import java.time.LocalDate;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,9 @@ import com.practicing.dailyentries.projection.DailyExpensesDetailsProjection;
 import com.practicing.dailyentries.repositories.CategoryRepository;
 import com.practicing.dailyentries.repositories.DailyExpensesRepository;
 import com.practicing.dailyentries.repositories.UserRepository;
+import com.practicing.dailyentries.services.exceptions.ResourceNotFoundException;
+
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class DailyExpensesService {
@@ -36,9 +40,13 @@ public class DailyExpensesService {
 	
 	@Transactional(readOnly = true)
 	public DailyExpensesProjectionDTO findById(Long id) {
-		Optional<DailyExpenses> result = repository.findById(id);
-		DailyExpenses dailyExpenses = result.get();
-		return new DailyExpensesProjectionDTO(dailyExpenses);
+		try {
+			Optional<DailyExpenses> result = repository.findById(id);
+			DailyExpenses dailyExpenses = result.get();
+			return new DailyExpensesProjectionDTO(dailyExpenses);
+		} catch (NoSuchElementException e) {
+			throw new ResourceNotFoundException("Recurso não encontrado.");
+		}
 	}
 		
 	@Transactional(readOnly = true)
@@ -58,10 +66,14 @@ public class DailyExpensesService {
 	
 	@Transactional
 	public DailyExpensesDTO update(Long id, DailyExpensesDTO dto) {
-		DailyExpenses entity = repository.getReferenceById(id);
-		copyDtoToEntity(dto, entity);		
-		entity = repository.save(entity);
-		return new DailyExpensesDTO(entity);
+		try {
+			DailyExpenses entity = repository.getReferenceById(id);
+			copyDtoToEntity(dto, entity);		
+			entity = repository.save(entity);
+			return new DailyExpensesDTO(entity);
+		} catch (EntityNotFoundException e) {
+			throw new ResourceNotFoundException("Recurso não encontrado.");
+		}
 	}
 	
 	@Transactional(propagation = Propagation.SUPPORTS)

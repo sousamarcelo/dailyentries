@@ -2,15 +2,33 @@ package com.practicing.dailyentries.dto;
 
 import com.practicing.dailyentries.entities.DailyExpenses;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
+
 public class DailyExpensesDTO {
 	
 	private Long id;
+	
+	@Size(min = 3, max = 80, message = "Nome precisa ter de 3 a 80 caracteres.")
+	@NotBlank(message = "Campo obrigatório.")
 	private String name;
+	
+	@Size(min = 10, message = "Descrição precisa ter no minimo 10 caracteres.")
+	@NotBlank(message = "Campo obrigatório.")
 	private String description;
+	
+	@NotNull(message = "Campo obrigatório.")
+	@Positive(message = "Valor não pode ser manor ou iguai a zero.")
 	private Double amount;
 	private String status;
 	private String date;
+	
+	@NotNull(message = "Campo obrigatório.")
 	private Long user;	
+	
+	@NotNull(message = "Campo obrigatório.")
 	private Long category;	
 	
 	public DailyExpensesDTO() {

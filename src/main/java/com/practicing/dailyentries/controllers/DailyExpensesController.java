@@ -20,6 +20,8 @@ import com.practicing.dailyentries.dto.DailyExpensesDTO;
 import com.practicing.dailyentries.dto.DailyExpensesProjectionDTO;
 import com.practicing.dailyentries.services.DailyExpensesService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping(value = "/dailyexpenses")
 public class DailyExpensesController {
@@ -40,14 +42,14 @@ public class DailyExpensesController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<DailyExpensesDTO> insert(@RequestBody DailyExpensesDTO dto){
+	public ResponseEntity<DailyExpensesDTO> insert(@Valid @RequestBody DailyExpensesDTO dto){
 		dto = service.insert(dto);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getId()).toUri();
 		return ResponseEntity.created(uri).body(dto);
 	}
 	
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<DailyExpensesDTO> update(@PathVariable Long id, @RequestBody DailyExpensesDTO dto){
+	public ResponseEntity<DailyExpensesDTO> update(@PathVariable Long id, @Valid @RequestBody DailyExpensesDTO dto){
 		dto = service.update(id, dto);
 		return ResponseEntity.ok(dto);
 	}

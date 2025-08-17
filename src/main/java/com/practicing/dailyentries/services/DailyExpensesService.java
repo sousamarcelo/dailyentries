@@ -50,12 +50,21 @@ public class DailyExpensesService {
 	@Transactional
 	public DailyExpensesDTO insert(DailyExpensesDTO dto) {
 		DailyExpenses entity = new DailyExpenses();
-		copyDtoToEntity(dto, entity);
+		copyDtoToEntity(dto, entity);		
+		entity = repository.save(entity);
+		return new DailyExpensesDTO(entity);
+	}
+	
+	@Transactional
+	public DailyExpensesDTO update(Long id, DailyExpensesDTO dto) {
+		DailyExpenses entity = repository.getReferenceById(id);
+		copyDtoToEntity(dto, entity);		
+		entity = repository.save(entity);
 		return new DailyExpensesDTO(entity);
 	}
 
 	private void copyDtoToEntity(DailyExpensesDTO dto, DailyExpenses entity) {
-		entity.setId(dto.getId());
+		//entity.setId(dto.getId());
 		entity.setName(dto.getName());
 		entity.setDescription(dto.getDescription());
 		entity.setAmount(dto.getAmount());
@@ -64,8 +73,7 @@ public class DailyExpensesService {
 		User user = userRepository.getReferenceById(dto.getUser());
 		entity.setUser(user);
 		Category category = categoryRepository.getReferenceById(dto.getCategory());
-		entity.setCategory(category);		
-		entity = repository.save(entity);
+		entity.setCategory(category);
 		
 	}
 }

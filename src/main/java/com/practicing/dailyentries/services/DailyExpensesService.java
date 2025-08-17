@@ -4,7 +4,9 @@ import java.time.LocalDate;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+import org.hibernate.ResourceClosedException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,7 @@ import com.practicing.dailyentries.projection.DailyExpensesDetailsProjection;
 import com.practicing.dailyentries.repositories.CategoryRepository;
 import com.practicing.dailyentries.repositories.DailyExpensesRepository;
 import com.practicing.dailyentries.repositories.UserRepository;
+import com.practicing.dailyentries.services.exceptions.DataBaseException;
 import com.practicing.dailyentries.services.exceptions.ResourceNotFoundException;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -78,7 +81,15 @@ public class DailyExpensesService {
 	
 	@Transactional(propagation = Propagation.SUPPORTS)
 	public void delete(Long id) {
-		repository.deleteById(id);
+		if(!repository.existsById(id)) {
+			throw new ResourceClosedException("Recusro não encontrato.");
+		}
+		
+		try {
+			repository.deleteById(id);
+		} catch (DataIntegrityViolationException e) {
+			throw new DataBaseException("Falha de integridade referencial.");
+		}		
 	}
 
 	private void copyDtoToEntity(DailyExpensesDTO dto, DailyExpenses entity) {

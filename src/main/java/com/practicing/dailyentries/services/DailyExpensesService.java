@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.practicing.dailyentries.dto.DailyExpensesDTO;
@@ -62,9 +63,13 @@ public class DailyExpensesService {
 		entity = repository.save(entity);
 		return new DailyExpensesDTO(entity);
 	}
+	
+	@Transactional(propagation = Propagation.SUPPORTS)
+	public void delete(Long id) {
+		repository.deleteById(id);
+	}
 
 	private void copyDtoToEntity(DailyExpensesDTO dto, DailyExpenses entity) {
-		//entity.setId(dto.getId());
 		entity.setName(dto.getName());
 		entity.setDescription(dto.getDescription());
 		entity.setAmount(dto.getAmount());

@@ -82,7 +82,7 @@ public class DailyExpensesService {
 	@Transactional(propagation = Propagation.SUPPORTS)
 	public void delete(Long id) {
 		if(!repository.existsById(id)) {
-			throw new ResourceClosedException("Recusro não encontrato.");
+			throw new ResourceNotFoundException("Recusro não encontrato.");
 		}
 		
 		try {

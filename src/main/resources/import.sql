@@ -11,7 +11,9 @@ INSERT INTO tb_category(name) VALUES ('Viagem');
 INSERT INTO tb_user (name, email, phone, password) VALUES ('Maria Brown', 'maria@gmail.com', '988888888', '1234567');
 INSERT INTO tb_user (name, email, phone, password) VALUES ('Alex Green', 'alex@gmail.com', '977777777', '1234567');
 
---CADASTRO DESPESAS DIARIAS
+--CADASTRO PERMISSÕES
+INSERT INTO tb_role (authority) VALUES ('ROLE_ADMIN')
+INSERT INTO tb_role (authority) VALUES ('ROLE_CLIENT')
 
 -- CADASTRO DESPESAS USUARIO 1: Maria Brown
 INSERT INTO tb_expenses (name, description, amount, status, date, user_id, category_id) VALUES ('Compra mensal', 'Atacadão', 1000.00, 'PENDING', '2025-08-08', 1, 1);

@@ -11,9 +11,14 @@ INSERT INTO tb_category(name) VALUES ('Viagem');
 INSERT INTO tb_user (name, email, phone, password) VALUES ('Maria Brown', 'maria@gmail.com', '988888888', '1234567');
 INSERT INTO tb_user (name, email, phone, password) VALUES ('Alex Green', 'alex@gmail.com', '977777777', '1234567');
 
---CADASTRO PERMISSÕES
-INSERT INTO tb_role (authority) VALUES ('ROLE_ADMIN')
-INSERT INTO tb_role (authority) VALUES ('ROLE_CLIENT')
+--CADASTRO (ROLE)PERMISSÕES
+INSERT INTO tb_role (authority) VALUES ('ROLE_ADMIN');
+INSERT INTO tb_role (authority) VALUES ('ROLE_CLIENT');
+
+-- ASSOCIAÇÃO USUARIO E PERMISSÃO
+INSERT INTO tb_user_role (user_id, role_id) VALUES (1, 1);
+INSERT INTO tb_user_role (user_id, role_id) VALUES (2, 1);
+INSERT INTO tb_user_role (user_id, role_id) VALUES (2, 2);
 
 -- CADASTRO DESPESAS USUARIO 1: Maria Brown
 INSERT INTO tb_expenses (name, description, amount, status, date, user_id, category_id) VALUES ('Compra mensal', 'Atacadão', 1000.00, 'PENDING', '2025-08-08', 1, 1);
@@ -28,3 +33,4 @@ INSERT INTO tb_expenses (name, description, amount, status, date, user_id, categ
 INSERT INTO tb_expenses (name, description, amount, status, date, user_id, category_id) VALUES ('Passagem aérea', 'Latam', 1500.00, 'INT_PROGRESS', '2025-08-10', 2, 7);
 INSERT INTO tb_expenses (name, description, amount, status, date, user_id, category_id) VALUES ('Hotel', 'Pousada Sol e Mar', 900.00, 'PENDING', '2025-08-11', 2, 7);
 INSERT INTO tb_expenses (name, description, amount, status, date, user_id, category_id) VALUES ('Manutenção carro', 'Troca de óleo e filtros', 350.00, 'CANCELED', '2025-08-02', 2, 6);
+

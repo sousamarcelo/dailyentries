@@ -49,13 +49,24 @@ public class DailyExpensesService {
 		} catch (NoSuchElementException e) {
 			throw new ResourceNotFoundException("Recurso não encontrado.");
 		}
-	}
+	}	
 		
 	@Transactional(readOnly = true)
 	public Page<DailyExpensesProjectionDTO> dailyExpensesAll(Pageable pageable){
 		Page<DailyExpensesDetailsProjection> list = repository.dailyExpensesAll(pageable);
 		Page<DailyExpensesProjectionDTO> result = list.map(x -> new DailyExpensesProjectionDTO(x));
 		return result;
+	}
+	
+	@Transactional(readOnly = true)
+	public Page<DailyExpensesProjectionDTO> dailyExpensesSearch(String searchName, Pageable pageable) {
+		try {
+			Page<DailyExpensesDetailsProjection> page = repository.dailyExpensesSearch(searchName, pageable);
+			Page<DailyExpensesProjectionDTO> result = page.map(x -> new DailyExpensesProjectionDTO(x));
+			return result;
+		} catch (NoSuchElementException e) {
+			throw new ResourceNotFoundException("Recurso não encontrado.");
+		}
 	}
 	
 	@Transactional
